@@ -1,0 +1,40 @@
+G:\BotApplication\BotApplication\bin\Bot Application.dll.config
+G:\BotApplication\BotApplication\bin\Bot Application.dll
+G:\BotApplication\BotApplication\bin\Bot Application.pdb
+G:\BotApplication\BotApplication\bin\Autofac.dll
+G:\BotApplication\BotApplication\bin\Chronic.dll
+G:\BotApplication\BotApplication\bin\Microsoft.Bot.Builder.Autofac.dll
+G:\BotApplication\BotApplication\bin\Microsoft.Bot.Builder.dll
+G:\BotApplication\BotApplication\bin\Microsoft.Bot.Connector.dll
+G:\BotApplication\BotApplication\bin\Microsoft.IdentityModel.Protocol.Extensions.dll
+G:\BotApplication\BotApplication\bin\Microsoft.Rest.ClientRuntime.dll
+G:\BotApplication\BotApplication\bin\Microsoft.WindowsAzure.Configuration.dll
+G:\BotApplication\BotApplication\bin\Newtonsoft.Json.dll
+G:\BotApplication\BotApplication\bin\System.IdentityModel.Tokens.Jwt.dll
+G:\BotApplication\BotApplication\bin\System.Net.Http.Formatting.dll
+G:\BotApplication\BotApplication\bin\System.Web.Http.dll
+G:\BotApplication\BotApplication\bin\System.Web.Http.WebHost.dll
+G:\BotApplication\BotApplication\bin\Autofac.xml
+G:\BotApplication\BotApplication\bin\Microsoft.Bot.Builder.xml
+G:\BotApplication\BotApplication\bin\Microsoft.Bot.Builder.Autofac.xml
+G:\BotApplication\BotApplication\bin\Microsoft.Bot.Connector.xml
+G:\BotApplication\BotApplication\bin\Microsoft.IdentityModel.Protocol.Extensions.xml
+G:\BotApplication\BotApplication\bin\Microsoft.WindowsAzure.Configuration.xml
+G:\BotApplication\BotApplication\bin\Newtonsoft.Json.xml
+G:\BotApplication\BotApplication\bin\System.IdentityModel.Tokens.Jwt.xml
+G:\BotApplication\BotApplication\bin\System.Net.Http.Formatting.xml
+G:\BotApplication\BotApplication\bin\System.Web.Http.xml
+G:\BotApplication\BotApplication\bin\System.Web.Http.WebHost.xml
+G:\BotApplication\BotApplication\bin\ar\Microsoft.Bot.Builder.resources.dll
+G:\BotApplication\BotApplication\bin\cs\Microsoft.Bot.Builder.resources.dll
+G:\BotApplication\BotApplication\bin\de-dE\Microsoft.Bot.Builder.resources.dll
+G:\BotApplication\BotApplication\bin\en\Microsoft.Bot.Builder.resources.dll
+G:\BotApplication\BotApplication\bin\es\Microsoft.Bot.Builder.resources.dll
+G:\BotApplication\BotApplication\bin\fa\Microsoft.Bot.Builder.resources.dll
+G:\BotApplication\BotApplication\bin\fr\Microsoft.Bot.Builder.resources.dll
+G:\BotApplication\BotApplication\bin\ja\Microsoft.Bot.Builder.resources.dll
+G:\BotApplication\BotApplication\bin\ru\Microsoft.Bot.Builder.resources.dll
+G:\BotApplication\BotApplication\bin\zh-hans\Microsoft.Bot.Builder.resources.dll
+G:\BotApplication\BotApplication\obj\Debug\BotApplication.csprojResolveAssemblyReference.cache
+G:\BotApplication\BotApplication\obj\Debug\Bot Application.dll
+G:\BotApplication\BotApplication\obj\Debug\Bot Application.pdb
