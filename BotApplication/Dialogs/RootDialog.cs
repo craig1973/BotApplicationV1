@@ -19,24 +19,13 @@ namespace BotApplication.Dialogs
 		private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
 		{
 			var activity = await result as Activity;
-			if (activity.Text.ToLower() == ForLeaseOption.ToLower())
-			{
-				context.Call(new ForLeaseDialog(), this.AfterForLeaseDialog);
-			}
-			else if (activity.Text.ToLower() == FindAHouseOption.ToLower())
-			{
-				context.Call(new FindAHouseDialog(), this.AfterFindAHouseDialog);
-			}
-			else
-			{
-				PromptDialog.Choice(
+			PromptDialog.Choice(
 				context,
 				this.AfterChoiceSelected,
 				new[] { ForLeaseOption, FindAHouseOption },
 				"Hello, Welcome, what can i do for u?",
 				"I am sorry but I didn't understand that. I need you to select one of the options below",
-				attempts: 2);
-			}
+			attempts: 2);
 		}
 		private async Task AfterChoiceSelected(IDialogContext context, IAwaitable<string> result)
 		{
