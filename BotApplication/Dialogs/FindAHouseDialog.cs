@@ -56,7 +56,7 @@ namespace BotApplication.Dialogs
 			try
 			{
 				var selection = await result;
-				string sql = "DECLARE @g geography;SET @g = geography::STPointFromText('POINT(" + longt + " "+ lat + " )', 4326); SELECT TOP 10 geography::STPointFromText('POINT('+longt+' '+lat+')', 4326).STDistance(@g) as Distance, id, longt, lat, name, phone, price,pic1,pic2,pic3,pic4,pic5,pic6,pic7,pic8,pic9 FROM for_lease where geography::STPointFromText('POINT('+longt+' '+lat+')', 4326).STDistance(@g) < 10000 ";
+				string sql = "DECLARE @g geography;SET @g = geography::STPointFromText('POINT(" + longt + " "+ lat + " )', 4326); SELECT TOP 10 geography::STPointFromText('POINT('+longt+' '+lat+')', 4326).STDistance(@g) as Distance, id, longt, lat, name, phone, price, leaserId, imageUrl FROM Leaser a join (select leaserId, min(imageUrl) as imageUrl from Images group by leaserId) b on a.id=b.leaserId where geography::STPointFromText('POINT('+longt+' '+lat+')', 4326).STDistance(@g) < 10000";
 				var reply = context.MakeMessage();
 				switch (selection)
 				{
@@ -100,8 +100,8 @@ namespace BotApplication.Dialogs
 							"Distance: " + Math.Round(reader.GetDouble(reader.GetOrdinal("Distance"))*0.001, 2) + " Miles",
 							"Price: $" + reader.GetString(reader.GetOrdinal("price")),
 							"Phone: " + reader.GetString(reader.GetOrdinal("phone")),
-							new CardImage(url: System.Web.HttpUtility.UrlDecode(reader.GetString(reader.GetOrdinal("pic1")))),
-							new CardAction(ActionTypes.OpenUrl, "Details", value: "http://detecttype.azurewebsites.net?id="+ reader.GetInt32(reader.GetOrdinal("id")))
+							new CardImage(url: reader.GetString(reader.GetOrdinal("imageUrl"))),
+							new CardAction(ActionTypes.OpenUrl, "Details", value: "http://detecttype.azurewebsites.net?id="+ reader.GetInt32(reader.GetOrdinal("leaserId")))
 						)
 					);
 				}

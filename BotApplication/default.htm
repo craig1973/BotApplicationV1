@@ -1,12 +1,83 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="Sources/details.css">
     <title></title>
     <meta charset="utf-8" />
 </head>
 <body style="font-family:'Segoe UI'">
-    <h1>BotApplication</h1>
-    <p>Describe your bot here and your terms of use etc.</p>
-    <p>Visit <a href="https://www.botframework.com/">Bot Framework</a> to register your bot. When you register it, remember to set your bot's endpoint to <pre>https://<i>your_bots_hostname</i>/api/messages</pre></p>
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators" id="list">
+        </ol>
+        <div class="carousel-inner" role="listbox" id="carsouel">
+        </div>
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <div class="container marketing">
+        <div class="row featurette">
+            <div class="col-md-7">
+                <h2 class="featurette-heading">Owner: <span class="text-muted" id="distance"></span></h2>
+                <h2 class="featurette-heading">phone: <span class="text-muted" id="phone"></span></h2>
+                <p class="lead" id="summary"></p>
+            </div>
+            <div class="col-md-5">
+                <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+            </div>
+        </div>
+        <!--<footer>
+            <p class="pull-right"><a href="#">Back to top</a></p>
+            <p>&copy; 2016 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        </footer>-->
+    </div>
+    <script>
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+        $(document).ready(function () {
+            if (GetQueryString("id") != null && GetQueryString("id") != "") {
+                $.getJSON("api/details/" + GetQueryString("id"),
+                    function (data) {
+                        data = JSON.parse(data);
+                        var list = document.getElementById("list");
+                        var carsouel = document.getElementById("carsouel");
+                        var listInnerHtml = "";
+                        for (var i = 0; i < data.length; i++) {
+                            var div = document.createElement("div");
+                            if (i == 0) {
+                                div.className = "item active";
+                                listInnerHtml += '<li data-target="#myCarousel" data-slide-to="'+i+'" class="active"></li>'
+                            } else {
+                                div.className = "item";
+                                listInnerHtml += '<li data-target="#myCarousel" data-slide-to="' + i + '"></li>'
+                            }
+                            div.innerHTML = '<img src="' + data[i]['imageUrl'] + '">';
+                            carsouel.appendChild(div);
+                        }
+                        $("#list").append(listInnerHtml);
+                        $("#distance").append(data[0]['name']);
+                        $("#phone").append(data[0]['phone']);
+                    }
+                );
+            }
+        });
+    </script>
 </body>
 </html>

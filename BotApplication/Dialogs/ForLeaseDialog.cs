@@ -3,6 +3,11 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using System.Data.SqlClient;
+using System.Net;
+using System.IO;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using BotApplication.Models;
 
 namespace BotApplication.Dialogs
 {
@@ -67,7 +72,6 @@ namespace BotApplication.Dialogs
 					longt = context.Activity.ChannelData.message.attachments[0].payload.coordinates.@long;
 					await context.PostAsync($"Step4: Please tell me the price you want to set");
 					context.Wait(this.GetPriceAsync);
-					//await context.PostAsync($"Step4: Please send me a picture of your house");
 				}
 			}
 			else
@@ -99,6 +103,12 @@ namespace BotApplication.Dialogs
 				var attachmentData = message.Attachments[0].Content;
 				var attachmentType = message.Attachments[0].ContentType;
 				var attachmentUrl = message.Attachments[0].ContentUrl;
+				WebClient client = new WebClient();
+				byte[] bytes = client.DownloadData(new Uri(attachmentUrl));
+
+				MemoryStream ms = new MemoryStream(bytes);
+				string uniqueBlobName = $"{Guid.NewGuid().ToString().Replace("-", "")}.jpg";
+				attachmentUrl = Storage.SaveFile(ms, "images", uniqueBlobName, "image/jpg");
 				picUrl[picCount] = attachmentUrl;
 				picCount++;
 				if (picCount < 9)
@@ -113,13 +123,14 @@ namespace BotApplication.Dialogs
 				}
 				else
 				{
-					if (SaveToDatabase(name, phone, price, lat, longt, picUrl))
+					int leaserId = Database.SaveToLeaser(name, phone, price, longt, lat);
+					if (leaserId > 0)
 					{
+						for (int i = 0; i < picCount; i++)
+						{
+							Database.SaveToImages(leaserId, picUrl[i]);
+						}
 						context.Done(true);
-					}
-					else
-					{
-						context.Done(false);
 					}
 				}
 			}
@@ -127,9 +138,6 @@ namespace BotApplication.Dialogs
 				await context.PostAsync($"I cant detect any pictures. Please try again.");
 			}
 		}
-
-		
-
 		private async Task AfterChoiceSelected(IDialogContext context, IAwaitable<string> result)
 		{
 			try
@@ -142,22 +150,13 @@ namespace BotApplication.Dialogs
 						context.Wait(this.GetPictureAsync);
 						break;
 					case "Done":
-						/*****for sql validat*******/
-						//for (int i = 0; i < picUrl.Length; i++)
-						//{
-						//	if (picUrl[i] != "")
-						//	{
-						//		picUrl[i] = System.Web.HttpUtility.UrlEncode(picUrl[i]);
-						//	}
-						//	else
-						//	{
-						//		picUrl[i] = "";
-						//	}
-						//}
-						//string test = "insert into for_lease values('" + lat + "','" + longt + "','" + name + "','" + phone + "','" + picUrl[0] + "','" + picUrl[1] + "','" + picUrl[2] + "','" + picUrl[3] + "','" + picUrl[4] + "','" + picUrl[5] + "','" + picUrl[6] + "','" + picUrl[7] + "','" + picUrl[8] + "')";
-						//await context.PostAsync($"{test}");
-						if (SaveToDatabase(name, phone, price, lat, longt, picUrl))
+						int leaserId = Database.SaveToLeaser(name, phone, price, longt, lat);
+						if (leaserId > 0)
 						{
+							for (int i = 0; i < picCount; i++)
+							{
+								Database.SaveToImages(leaserId, picUrl[i]);
+							}
 							context.Done(true);
 						}
 						else
@@ -178,27 +177,6 @@ namespace BotApplication.Dialogs
 			return System.Text.RegularExpressions.Regex.IsMatch(str_number, @"^[0-9]*$");
 		}
 
-		public bool SaveToDatabase(string name, string phone, string price, string lat, string longt, string[] picUrl) {
-			for (int i = 0; i < picUrl.Length; i++)
-			{
-				if (picUrl[i] != "")
-				{
-					picUrl[i] = System.Web.HttpUtility.UrlEncode(picUrl[i]);
-				}
-				else
-				{
-					picUrl[i] = "";
-				}
-
-			}
-			string connectString = "Server=tcp:msgbot.database.windows.net,1433;Initial Catalog=MSGBOT;Persist Security Info=False;User ID=craig;Password=MSGbot123456;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-			SqlConnection conn = new SqlConnection(connectString);
-			SqlCommand cmd = conn.CreateCommand();
-			cmd.CommandText = "insert into for_lease(longt, lat, name, phone, price, pic1,pic2,pic3,pic4,pic5,pic6,pic7,pic8,pic9) values('" + longt + "','" + lat + "','" + name + "','" +phone+ "','" + price + "','" + picUrl[0] + "','" + picUrl[1] + "','" + picUrl[2] + "','" + picUrl[3] + "','" + picUrl[4] + "','" + picUrl[5] + "','" + picUrl[6] + "','" + picUrl[7] + "','" + picUrl[8] + "')";
-			conn.Open();
-			cmd.ExecuteNonQuery();
-			conn.Close();
-			return true;
-		}
+		
 	}
 }
